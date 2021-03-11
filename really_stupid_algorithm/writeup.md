@@ -24,14 +24,14 @@ This was the originally intended solution, and it is slightly harder than the ot
 But how do we use this to leak information? Assume we know the value of the most significant `a` bits. We can use the OFB XOR to set these all to zero. We now want to know the value of bit `a+1`. If we have a 2048 bit key, we can bitshift the plaintext so this bit is the 2049th least significant bit. This means that if this bit is a 1, then `pt > n`. Due to the way RSA works, this will scramble our plaintext and 'CSC' will no longer be present in it.\
 
 So we can recover bit `a+1` using the following steps:
-Step 1: Make sure the highest `a` bits are 0
-Step 2: Set up the OFB stream such that the string 'CSC' will be present after we shift bits in the next step.
-Step 3: Shift the plaintext to make sure bit `a+1` is at the correct position.
-Step 4: Run the oracle. If the oracle accepts the plaintext, the bit was 0 and we are done.
-Step 5: If the oracle rejects the plaintext, repeat step 2 and 4 but this time flip bit `a+1`.
-Step 4: Run the oracle. If the oracle accepts the plaintext, the bit was 1 and we are done.
-Step 6: If the oracle rejects the plaintext, that means bit `a+2` was 1. Flip it to zero and repeat step 2 and 3.
-Step 7: Run the oracle. If the oracle accepts the plaintext, the bit was 0 and we are done. If it rejects the plaintext the bit was 1 and we are done as well.
+Step 1) Make sure the highest `a` bits are 0
+Step 2) Set up the OFB stream such that the string 'CSC' will be present after we shift bits in the next step.
+Step 3) Shift the plaintext to make sure bit `a+1` is at the correct position.
+Step 4) Run the oracle. If the oracle accepts the plaintext, the bit was 0 and we are done.
+Step 5) If the oracle rejects the plaintext, repeat step 2 and 4 but this time flip bit `a+1`.
+Step 4) Run the oracle. If the oracle accepts the plaintext, the bit was 1 and we are done.
+Step 6) If the oracle rejects the plaintext, that means bit `a+2` was 1. Flip it to zero and repeat step 2 and 3.
+Step 7) Run the oracle. If the oracle accepts the plaintext, the bit was 0 and we are done. If it rejects the plaintext the bit was 1 and we are done as well.
 
 There is a chance of this process failing, but it is uncommon. If it happens, just rerun the solution script.
 
